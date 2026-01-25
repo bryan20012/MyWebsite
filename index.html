@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BryanChenManWai</title>
+    <meta name="description"
+        content="Automotive and lifestyle photography portfolio. Minimalist design for premium visual storytelling.">
+    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico"> -->
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-black text-white selection:bg-white selection:text-black">
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="fixed pointer-events-none z-50 mix-blend-difference md-block">
+        <div
+            class="w-4 h-4 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 ease-out">
+        </div>
+    </div>
+
+
+
+    <!-- Landing Section -->
+    <section id="welcome" class="w-full h-screen flex justify-center items-center">
+        <!-- Hero Background -->
+        <div class="absolute inset-0 z-0 bg-cover bg-center hero-bg" style="background-image: url('assets/jesko.JPG');"
+            fetchpriority="high">
+        </div>
+        <div class="absolute inset-0 z-0 bg-black/40 overlay"></div>
+
+        <div class="landing-stack z-10">
+            <!-- Logo Circle -->
+            <div class="logo-circle">
+                <span>welcome</span>
+            </div>
+
+            <!-- Glass Action Button -->
+            <a href="#" class="enter-btn glass-btn">
+                ENTER GALLERY
+            </a>
+
+            <!-- Minimal About Link -->
+            <a href="#about" class="link-minimal">
+                ABOUT
+            </a>
+
+            <div class="social-links">
+                <a href="https://instagram.com/yourusername" target="_blank" class="social-icon" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4.162 4.162 0 1 1 0-8.324A4.162 4.162 0 0 1 12 16zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+                    </svg>
+                </a>
+                <a href="https://tiktok.com/@yourusername" target="_blank" class="social-icon" aria-label="TikTok">
+                    <!-- Accurate Douyin/TikTok SVG path -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.53 0h3.1c.04 4.1 3.32 7.4 7.42 7.43v3.12c-2.31-.02-4.4-.9-5.96-2.34v8.32c0 4.12-3.34 7.47-7.46 7.47a7.47 7.47 0 0 1-7.47-7.47 7.47 7.47 0 0 1 7.47-7.47c.3 0 .58.02.87.05V12.2c-.28-.05-.57-.08-.87-.08a4.35 4.35 0 0 0-4.35 4.35 4.35 4.35 0 0 0 4.35 4.35 4.35 4.35 0 0 0 4.35-4.35V0z" />
+                    </svg>
+                </a>
+                <a href="https://wa.me/yourphonenumber" target="_blank" class="social-icon" aria-label="WhatsApp">
+                    <!-- Accurate WhatsApp SVG path -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.03 0C5.39 0 0 5.39 0 12.03c0 2.12.55 4.18 1.59 6l-1.59 5.81 5.94-1.56a11.97 11.97 0 0 0 6.09 1.66h.01c6.64 0 12.03-5.39 12.03-12.03A12.03 12.03 0 0 0 12.03 0zm6.1 17.02c-.25.7-.99 1.28-1.74 1.45-.49.1-1.12.18-3.26-.71a12.5 12.5 0 0 1-5.61-4.93c-.93-1.24-1.63-2.73-1.63-4.28 0-1.57.81-2.35 1.1-2.65.25-.26.65-.39.99-.39.11 0 .21 0 .3.01.29.01.43.03.62.48.24.58.81 1.98.88 2.13.07.15.12.33.02.53s-.15.34-.3.51c-.15.17-.31.38-.45.53-.15.17-.32.35-.14.66.18.31.81 1.34 1.74 2.17 1.2 1.07 2.21 1.4 2.52 1.56.31.15.49.13.67-.08.19-.21.81-.94 1.03-1.26.21-.32.43-.27.73-.16.3.11 1.88.89 2.21 1.05.32.16.54.24.62.37.08.13.08.76-.17 1.46z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="min-h-screen w-full relative">
+        <nav class="gallery-nav flex justify-between items-center p-8 p-md-12 w-full">
+            <a href="#"
+                class="text-[10px] tracking-[0.4em] font-medium uppercase hover:opacity-50 transition-opacity">SPOTTEDBYBRYAN</a>
+            <div class="flex gap-8 gap-md-16">
+                <a href="#portfolio"
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Gallery</a>
+                <a href="#about"
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">About</a>
+            </div>
+        </nav>
+
+        <div class="portfolio-grid">
+            <!-- Project 1 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/jesko34.JPG" alt="Koenigsegg Jesko 3/4 front view photography" class="primary-img"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <img src="assets/jesko2.JPG" alt="jesko-headlamps"
+                    class="secondary-img absolute inset-0 opacity-0 scale-110" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Bespoke Brilliance | Koenigsegg Jesko
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">November 2026</p>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/9561.JPG" alt="956-3/4" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/9562.JPG" alt="956-front" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Le Mans Glory | Porsche 956</h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">October 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/my1.JPG" alt="my1" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/my2.JPG" alt="my2" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Sapphire Symphony | Zonda MY</h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">October 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/HuaryaBC1.JPG" alt="HBC1" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/HuaryaBC2.JPG" alt="HBC2" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Mechanical Glory | Huarya Tempesta
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">October 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/boring1.JPG" alt="tbc1" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/boring2.JPG" alt="tbc2" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">610Racing | Porsche 911 GT3 Cup
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">October 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/5991.JPG" alt="5991" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/5992.JPG" alt="5992" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Ferrari 599 GTB
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">August 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/lbwkf401.JPG" alt="lbwkf401" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/lbwkf402.JPG" alt="lbwkf402" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Liberty Walk | Ferrari F40
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">August 2025</p>
+                </div>
+            </div>
+
+            <!-- Project 8 -->
+            <div class="portfolio-item group cursor-none">
+                <img src="assets/9631.JPG" alt="9631" class="primary-img" loading="lazy" decoding="async"
+                    fetchpriority="low">
+                <img src="assets/9632.JPG" alt="9632" class="secondary-img absolute inset-0 opacity-0 scale-110"
+                    loading="lazy" decoding="async" fetchpriority="low">
+                <div class="item-overlay"></div>
+                <div class="item-details">
+                    <h3 class="text-xs font-medium tracking-widest uppercase mb-1">Porsche 963
+                    </h3>
+                    <p class="text-[9px] tracking-widest text-neutral-400 uppercase">May 2025</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about"
+        class="min-h-[60vh] w-full flex flex-col justify-center items-center p-8 text-center max-w-2xl mx-auto space-y-8">
+        <h2 class="text-[10px] tracking-[0.3em] uppercase text-neutral-500">Perspective</h2>
+        <p class="text-[11px] tracking-[0.25em] uppercase text-neutral-400 leading-relaxed max-w-lg mx-auto">
+            Capturing the intersection of engineering excellence and raw emotion. Every shot is a study in light,
+            shadow, and the mechanical soul.
+        </p>
+        <div class="flex gap-8">
+            <a href="mailto:your.email@example.com"
+                class="text-[9px] tracking-[0.2em] uppercase border-b border-neutral-700 hover:border-white transition-colors py-1">Contact</a>
+            <a href="https://instagram.com/yourusername"
+                class="text-[9px] tracking-[0.2em] uppercase border-b border-neutral-700 hover:border-white transition-colors py-1">Instagram</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-8 pb-12 flex justify-between items-center text-[9px] tracking-[0.2em] text-neutral-600 uppercase">
+        <p>&copy; 2026 SPOTTEDBYBRYAN</p>
+        <p>Built for visual excellence</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

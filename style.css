@@ -1,0 +1,784 @@
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --neutral-grey: #a3a3a3;
+    --secondary-grey: #404040;
+    --font-main: 'Inter', sans-serif;
+    --transition-slow: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    --transition-medium: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.gallery-active,
+body.gallery-active * {
+    cursor: none;
+}
+
+@media (max-width: 768px) {
+
+    body.gallery-active,
+    body.gallery-active * {
+        cursor: auto !important;
+    }
+}
+
+#custom-cursor {
+    display: none;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+body.gallery-active #custom-cursor {
+    display: block;
+}
+
+/* Rendering Optimizations */
+.portfolio-item {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 500px;
+    /* Placeholder size before load */
+    contain: paint;
+}
+
+@media (max-width: 768px) {
+    body.gallery-active #custom-cursor {
+        display: none !important;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-color);
+    scrollbar-gutter: stable;
+    /* Prevents layout shift when scrollbar appears */
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* Base Layout Utilities */
+.fixed {
+    position: fixed;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+.z-40 {
+    z-index: 40;
+}
+
+.z-50 {
+    z-index: 1000;
+    /* Ensure cursor is above EVERYTHING */
+}
+
+.h-screen {
+    height: 100vh;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.items-baseline {
+    align-items: baseline;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.gap-8 {
+    gap: 2rem;
+}
+
+.grid {
+    display: grid;
+}
+
+.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+    .grid-md-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .p-md-8 {
+        padding: 2rem;
+    }
+
+    .grid-lg-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.p-8 {
+    padding: 2rem;
+}
+
+.pb-12 {
+    padding-bottom: 3rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.max-w-2xl {
+    max-width: 42rem;
+}
+
+/* Typography */
+.text-center {
+    text-align: center;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.tracking-tighter {
+    letter-spacing: -0.05em;
+}
+
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+
+.tracking-\[0\.3em\] {
+    letter-spacing: 0.3em;
+}
+
+.tracking-\[0\.25em\] {
+    letter-spacing: 0.25em;
+}
+
+.tracking-\[0\.25em\] {
+    letter-spacing: 0.25em;
+}
+
+.tracking-\[0\.2em\] {
+    letter-spacing: 0.2em;
+}
+
+.tracking-\[0\.4em\] {
+    letter-spacing: 0.4em;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.leading-relaxed {
+    line-height: 1.625;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-\[9px\] {
+    font-size: 9px;
+}
+
+.text-\[10px\] {
+    font-size: 10px;
+}
+
+.text-\[11px\] {
+    font-size: 11px;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+}
+
+.text-6xl {
+    font-size: 3.75rem;
+}
+
+@media (min-width: 768px) {
+    .text-md-xl {
+        font-size: 1.25rem;
+    }
+
+    .text-md-8xl {
+        font-size: 6rem;
+    }
+}
+
+/* Colors & Effects */
+.bg-black {
+    background-color: #000;
+}
+
+.bg-neutral-900 {
+    background-color: #171717;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-neutral-400 {
+    color: #a3a3a3;
+}
+
+.text-neutral-500 {
+    color: #737373;
+}
+
+.text-neutral-600 {
+    color: #525252;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.opacity-20 {
+    opacity: 0.2;
+}
+
+.opacity-100 {
+    opacity: 1;
+}
+
+.transition-all {
+    transition-property: all;
+}
+
+.transition-opacity {
+    transition-property: opacity;
+}
+
+.transition-colors {
+    transition-property: background-color, border-color, color, fill, stroke;
+}
+
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+.duration-500 {
+    transition-duration: 500ms;
+}
+
+.duration-700 {
+    transition-duration: 700ms;
+}
+
+.duration-1000 {
+    transition-duration: 1000ms;
+}
+
+.delay-500 {
+    transition-delay: 500ms;
+}
+
+.ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ease-in-out {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mix-blend-difference {
+    mix-blend-mode: difference;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.pointer-events-auto {
+    pointer-events: auto;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0;
+    padding: 0;
+    /* Full screen wall on mobile */
+    width: 100%;
+    background-color: black;
+    overflow: hidden;
+    /* Prevent horizontal shift during arrival scale */
+}
+
+@media (min-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 4rem 5vw;
+        /* Flexible start */
+    }
+}
+
+@media (min-width: 1024px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 4rem 8vw;
+        /* Proportional expansion */
+    }
+}
+
+@media (min-width: 1400px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 6rem 12vw;
+        /* Max flexible focus */
+    }
+}
+
+.portfolio-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    /* Fixed unified ratio */
+    background-color: #171717;
+}
+
+.portfolio-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Auto-crop behavior */
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: transform, opacity;
+}
+
+.portfolio-item:hover .primary-img {
+    opacity: 0;
+    transform: scale(1.05);
+}
+
+.portfolio-item:hover .secondary-img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+}
+
+.portfolio-item:hover .item-overlay {
+    opacity: 1;
+}
+
+.item-details {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    color: white;
+    text-align: left;
+    transform: translateY(10px);
+    transition: transform 0.5s ease-out, opacity 0.5s ease;
+    opacity: 0;
+    z-index: 20;
+}
+
+.portfolio-item:hover .item-details {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Landing Transition Layer */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-in-out;
+}
+
+body.transition-mode::before {
+    opacity: 1;
+}
+
+/* Background Images */
+.bg-cover {
+    background-size: cover;
+}
+
+.bg-center {
+    background-position: center;
+}
+
+.hero-bg {
+    will-change: opacity, transform;
+    transition: opacity 0.1s linear;
+}
+
+/* Landing Experience - The Lens Expansion */
+#welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    transition:
+        transform 1.2s cubic-bezier(0.7, 0, 0.3, 1),
+        opacity 1.2s cubic-bezier(0.7, 0, 0.3, 1),
+        filter 1.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+body.gallery-active #welcome {
+    transform: scale(1.2);
+    filter: blur(30px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Landing Content Sequential Fade */
+.landing-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    z-index: 20;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.5s ease;
+}
+
+body.gallery-active .landing-stack {
+    transform: scale(0.95);
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+#welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    transition:
+        transform 1.4s cubic-bezier(0.7, 0, 0.3, 1),
+        opacity 1.4s cubic-bezier(0.7, 0, 0.3, 1),
+        filter 1.4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.logo-circle {
+    width: 120px;
+    height: 120px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.2rem 4rem;
+    border-radius: 4rem;
+    color: white;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-btn::after {
+    content: attr(data-progress);
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+    font-weight: 400;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.link-minimal {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.link-minimal:hover {
+    color: white;
+}
+
+.social-links {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: block;
+}
+
+.social-icon:hover {
+    opacity: 1;
+}
+
+/* Integrated Gallery Nav */
+.gallery-nav {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: transparent;
+    will-change: opacity;
+    transition: opacity 0.4s ease;
+}
+
+/* Hide gallery initially with an 'Arrival' animation */
+#portfolio,
+#about,
+footer {
+    opacity: 0;
+    transform: scale(1.05);
+    /* Arriving from deeper space */
+    transition:
+        opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+        transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+
+body.gallery-active #portfolio,
+body.gallery-active #about,
+body.gallery-active footer {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Selection */
+::selection {
+    background: white;
+    color: black;
+}
+
+/* Film Grain Overlay */
+body::after {
+    content: "";
+    position: fixed;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 100;
+    animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-5%, -10%);
+    }
+
+    20% {
+        transform: translate(-15%, 5%);
+    }
+
+    30% {
+        transform: translate(7%, -25%);
+    }
+
+    40% {
+        transform: translate(-5%, 25%);
+    }
+
+    50% {
+        transform: translate(-15%, 10%);
+    }
+
+    60% {
+        transform: translate(15%, 0%);
+    }
+
+    70% {
+        transform: translate(0%, 15%);
+    }
+
+    80% {
+        transform: translate(3%, 35%);
+    }
+
+    90% {
+        transform: translate(-10%, 10%);
+    }
+}
+
+/* Mobile Tweak - Show Cursor on touch if needed, but usually hidden */
+@media (max-width: 768px) {
+    #custom-cursor {
+        display: none !important;
+    }
+
+    .p-8 {
+        padding: 1.5rem;
+    }
+
+    .gap-8 {
+        gap: 1rem;
+    }
+
+    .portfolio-item img {
+        filter: grayscale(0%);
+        /* Always color on mobile for better UX */
+    }
+
+    nav {
+        padding: 1.5rem;
+    }
+
+    nav a {
+        padding: 0.5rem 0;
+        /* Larger touch targets */
+    }
+}
+
+footer {
+    font-family: var(--font-main);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .md-block {
+        display: block;
+    }
+}
