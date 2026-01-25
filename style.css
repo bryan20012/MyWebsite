@@ -574,22 +574,7 @@ body.gallery-active .landing-stack {
     backdrop-filter: blur(5px);
 }
 
-.nav-logo-link {
-    display: flex;
-    align-items: center;
-    height: 32px;
-    transition: opacity 0.3s ease;
-}
 
-.nav-logo-link:hover {
-    opacity: 0.6;
-}
-
-.nav-logo {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-}
 
 .glass-btn {
     background: rgba(255, 255, 255, 0.05);
