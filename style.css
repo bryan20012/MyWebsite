@@ -567,17 +567,11 @@ body.gallery-active .landing-stack {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    font-weight: 500;
     margin-bottom: 1rem;
     backdrop-filter: blur(5px);
-    overflow: hidden;
-}
-
-.main-logo {
-    width: 70%;
-    height: 70%;
-    object-fit: contain;
-    filter: brightness(1.2);
-    /* Slight boost if needed */
 }
 
 .nav-logo-link {
