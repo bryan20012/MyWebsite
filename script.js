@@ -198,4 +198,53 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // 7. About Modal Logic
+    const aboutModal = document.getElementById('about-modal');
+    const aboutTriggers = document.querySelectorAll('.about-trigger');
+    const modalClose = document.querySelector('.modal-close');
+
+    if (aboutModal && aboutTriggers.length > 0) {
+        const openModal = () => {
+            aboutModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModal = () => {
+            aboutModal.classList.remove('active');
+            // Only restore overflow if gallery isn't active or if we're on the landing page
+            if (!document.body.classList.contains('gallery-active')) {
+                // We're on landing page, but landing page originally has overflow:hidden until ENTER is clicked
+                // Wait, script says document.body.style.overflow = 'hidden' initially (line 175)
+            }
+
+            // Simpler approach:
+            if (document.body.classList.contains('gallery-active')) {
+                document.body.style.overflowY = 'auto';
+            } else {
+                document.body.style.overflow = 'hidden';
+            }
+        };
+
+        aboutTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+            });
+        });
+
+        modalClose?.addEventListener('click', closeModal);
+
+        // Close on click outside content
+        aboutModal.addEventListener('click', (e) => {
+            if (e.target === aboutModal) closeModal();
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && aboutModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
 });

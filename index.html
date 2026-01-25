@@ -46,7 +46,7 @@
             </a>
 
             <!-- Minimal About Link -->
-            <a href="#about" class="link-minimal">
+            <a href="javascript:void(0)" class="link-minimal about-trigger">
                 ABOUT
             </a>
 
@@ -83,8 +83,8 @@
             <div class="flex gap-8 gap-md-16">
                 <a href="#portfolio"
                     class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Gallery</a>
-                <a href="#about"
-                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">About</a>
+                <a href="javascript:void(0)"
+                    class="about-trigger text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">About</a>
             </div>
         </nav>
 
@@ -224,6 +224,33 @@
         <p>&copy; 2026 SPOTTEDBYBRYAN</p>
         <p>Built for visual excellence</p>
     </footer>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <div class="profile-frame">
+                    <img src="assets/misc/bcpic.jpg" alt="Bryan Chen" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h2 class="modal-title">BRYAN CHEN</h2>
+                    <h3 class="modal-subtitle">SPOTTEDBYBRYAN</h3>
+                    <div class="modal-divider"></div>
+                    <p class="modal-description">
+                        Automotive photographer and storyteller based in the intersection of engineering excellence and
+                        raw emotion.
+                        My work focuses on capturing the mechanical soul of high-performance machines through a
+                        minimalist and premium lens.
+                    </p>
+                    <div class="modal-socials">
+                        <a href="https://instagram.com/yourusername" target="_blank">INSTAGRAM</a>
+                        <a href="mailto:your.email@example.com">CONTACT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
