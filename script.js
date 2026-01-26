@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'F12') e.preventDefault();
         if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) e.preventDefault();
         if (e.ctrlKey && e.key === 'u') e.preventDefault();
+        if (
+            (e.ctrlKey && e.shiftKey && e.key === "I") ||
+            (e.metaKey && e.altKey && e.key === "I")
+        ) {
+            e.preventDefault();
+        }
     });
 
     // 1. Core State & Elements

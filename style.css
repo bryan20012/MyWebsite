@@ -55,7 +55,7 @@ html {
     scroll-behavior: smooth;
     background-color: var(--bg-color);
     scrollbar-gutter: stable;
-    /* Prevents layout shift when scrollbar appears */
+    /* Keeps site from jumping when scrollbar appears */
 }
 
 body {
@@ -65,6 +65,20 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Landing state: Lock scroll */
+body:not(.gallery-active) {
+    overflow: hidden !important;
+    height: 100vh;
+    height: 100dvh;
+}
+
+/* Gallery state: Release scroll */
+body.gallery-active {
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
 /* Base Layout Utilities */
@@ -543,19 +557,7 @@ body.gallery-active .landing-stack {
     transition-delay: 0s;
 }
 
-#welcome {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    transition:
-        transform 1.4s cubic-bezier(0.7, 0, 0.3, 1),
-        opacity 1.4s cubic-bezier(0.7, 0, 0.3, 1),
-        filter 1.4s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+
 
 .logo-circle {
     width: 120px;
