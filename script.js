@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.getElementById('custom-cursor');
     const cursorDot = cursor?.querySelector('div');
     const portfolioGrid = document.querySelector('.portfolio-grid');
+    const rewindOverlay = document.getElementById('rewind-overlay');
+    const filmToggle = document.getElementById('film-toggle');
+    const modernToggle = document.getElementById('modern-toggle');
+
+    let currentMode = 'modern';
+
 
     // Intersection Observer for reveal animations
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
@@ -30,35 +36,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     // 2. Load Projects from JSON
-    const loadProjects = async () => {
+    const loadProjects = async (source = 'projects.json') => {
         try {
-            const response = await fetch('projects.json');
+            const response = await fetch(source);
             const projects = await response.json();
 
             if (!portfolioGrid) return;
 
-            portfolioGrid.innerHTML = projects.map(project => `
-                <div class="portfolio-item group cursor-none">
-                    <img src="${project.primaryImg}" alt="${project.primaryAlt}" class="primary-img"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    <img src="${project.secondaryImg}" alt="${project.secondaryAlt}" 
-                        class="secondary-img absolute inset-0 opacity-0 scale-110" 
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    <div class="item-overlay"></div>
-                    <div class="item-details">
-                        <h3 class="text-xs font-medium tracking-widest uppercase mb-1">${project.title}</h3>
-                        <p class="text-[9px] tracking-widest text-neutral-400 uppercase">${project.date}</p>
-                    </div>
-                </div>
-            `).join('');
+            // Fade out grid before replacing content if not initial load
+            portfolioGrid.style.opacity = '0';
 
-            // Re-initialize logic that depends on portfolio items
-            setupRevealAnimations();
-            startPreloader();
+            setTimeout(() => {
+                portfolioGrid.innerHTML = projects.map(project => `
+                    <div class="portfolio-item group cursor-none">
+                        <img src="${project.primaryImg}" alt="${project.primaryAlt}" class="primary-img"
+                            loading="lazy" decoding="async" fetchpriority="low">
+                        <img src="${project.secondaryImg}" alt="${project.secondaryAlt}" 
+                            class="secondary-img absolute inset-0 opacity-0 scale-110" 
+                            loading="lazy" decoding="async" fetchpriority="low">
+                        <div class="item-overlay"></div>
+                        <div class="item-details">
+                            <h3 class="text-xs font-medium tracking-widest uppercase mb-1">${project.title}</h3>
+                            <p class="text-[9px] tracking-widest text-neutral-400 uppercase">${project.date}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Re-initialize logic that depends on portfolio items
+                setupRevealAnimations();
+                startPreloader();
+                portfolioGrid.style.opacity = '1';
+                portfolioGrid.style.transition = 'opacity 0.5s ease';
+            }, 300);
         } catch (error) {
             console.error('Error loading projects:', error);
         }
     };
+
 
     // 3. Setup Cursor Interactions
     const setupCursorInteractions = () => {
@@ -102,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Image Preloader Logic
     let loadedCount = 0;
     const startPreloader = () => {
+        loadedCount = 0; // Reset count for new gallery items
         const imagesToPreload = Array.from(document.querySelectorAll('.portfolio-item img'));
 
         const preloadNext = () => {
@@ -177,12 +192,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     const navOpacity = 1 - (scrolled / fadeThreshold);
                     galleryNav.style.opacity = Math.min(1, Math.max(0, navOpacity));
                     galleryNav.style.pointerEvents = navOpacity <= 0 ? 'none' : 'auto';
+
+                    // If in film mode, we might want to keep the nav visible or handle its opacity differently
+                    if (document.body.classList.contains('film-mode')) {
+                        galleryNav.style.opacity = '1';
+                        galleryNav.style.pointerEvents = 'auto';
+                    }
                 }
                 isScrolling = false;
             });
             isScrolling = true;
         }
     });
+
+    // 7.1 Horizontal Scroll for Film Mode
+    portfolioGrid?.addEventListener('wheel', (e) => {
+        if (currentMode === 'film' && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            // Slower scroll speed for cinematic feel
+            portfolioGrid.scrollLeft += e.deltaY * 0.8;
+        }
+    }, { passive: false });
 
     // 8. Landing Transition
     const enterBtns = document.querySelectorAll('.enter-btn');
@@ -228,13 +258,117 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const yearEl = document.getElementById("year");
+    const yearFilmEl = document.getElementById("year-film");
+    const currentYear = new Date().getFullYear();
+
     if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
+        yearEl.textContent = currentYear;
+    }
+    if (yearFilmEl) {
+        yearFilmEl.textContent = currentYear;
+    }
+
+
+    // 10. Film Mode Toggle Logic
+    const toggleFilmMode = (mode) => {
+        if (mode === currentMode) return;
+
+        // Trigger Rewind Animation
+        if (rewindOverlay) {
+            rewindOverlay.classList.add('active');
+
+            // Halfway through animation, switch theme and content
+            setTimeout(() => {
+                if (mode === 'film') {
+                    document.body.classList.add('film-mode');
+                    filmToggle.classList.add('hidden');
+                    modernToggle.classList.remove('hidden');
+                    loadProjects('film-projects.json');
+                } else {
+                    document.body.classList.remove('film-mode');
+                    filmToggle.classList.remove('hidden');
+                    modernToggle.classList.add('hidden');
+                    loadProjects('projects.json');
+                }
+                currentMode = mode;
+
+                // Reset scroll position for the grid
+                if (portfolioGrid) portfolioGrid.scrollLeft = 0;
+
+                // Scroll to top for fresh experience
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }, 400);
+
+            // Clean up animation
+            setTimeout(() => {
+                rewindOverlay.classList.remove('active');
+            }, 800);
+        }
+    };
+
+    if (filmToggle) filmToggle.addEventListener('click', () => toggleFilmMode('film'));
+    if (modernToggle) modernToggle.addEventListener('click', () => toggleFilmMode('modern'));
+
+    // 11. Film Mode Navigation - Click on Grid Background
+    if (portfolioGrid) {
+        portfolioGrid.addEventListener('click', (e) => {
+            if (currentMode !== 'film') return;
+
+            // Allow navigation even when clicking on images (hover effects still work via CSS)
+            // We removed the blocker line here
+
+            const gridRect = portfolioGrid.getBoundingClientRect();
+            const clickX = e.clientX - gridRect.left;
+            const gridWidth = gridRect.width;
+
+            const gridCenter = portfolioGrid.scrollLeft + (gridWidth / 2);
+            const items = Array.from(document.querySelectorAll('.portfolio-item'));
+
+            // Find the item closest to the center
+            let closestItemIndex = 0;
+            let minDistance = Infinity;
+
+            items.forEach((item, index) => {
+                const itemCenter = item.offsetLeft + (item.offsetWidth / 2);
+                const distance = Math.abs(gridCenter - itemCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestItemIndex = index;
+                }
+            });
+
+            if (clickX < gridWidth / 2) {
+                // Clicked left half - go to previous
+                const prevIndex = Math.max(0, closestItemIndex - 1);
+                const targetItem = items[prevIndex];
+
+                // Calculate position to center the target item
+                const targetScroll = targetItem.offsetLeft - (gridWidth / 2) + (targetItem.offsetWidth / 2);
+
+                portfolioGrid.scrollTo({
+                    left: targetScroll,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Clicked right half - go to next
+                const nextIndex = Math.min(items.length - 1, closestItemIndex + 1);
+                const targetItem = items[nextIndex];
+
+                // Calculate position to center the target item
+                const targetScroll = targetItem.offsetLeft - (gridWidth / 2) + (targetItem.offsetWidth / 2);
+
+                portfolioGrid.scrollTo({
+                    left: targetScroll,
+                    behavior: 'smooth'
+                });
+            }
+        });
     }
 
     // Initialize
     loadProjects();
     setupCursorInteractions(); // Initial setup for existing elements (nav, etc)
+
 
 });
 

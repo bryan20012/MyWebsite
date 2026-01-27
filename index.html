@@ -12,7 +12,9 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body class="bg-black text-white selection:bg-white selection:text-black">
@@ -81,13 +83,20 @@
         <nav class="gallery-nav flex justify-between items-center p-8 p-md-12 w-full">
             <a href="#"
                 class="text-[10px] tracking-[0.4em] font-medium uppercase hover:opacity-50 transition-opacity">SPOTTEDBYBRYAN</a>
-            <div class="flex gap-8 gap-md-16">
-                <a href="#portfolio"
-                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Gallery</a>
+            <div class="flex gap-8 gap-md-16 items-center">
+                <a href="#portfolio" id="modern-toggle"
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity hidden">Modern</a>
+                <a href="javascript:void(0)" id="film-toggle"
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Film</a>
                 <a href="javascript:void(0)"
                     class="about-trigger text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">About</a>
             </div>
         </nav>
+
+        <!-- Film Mode Footer Text (Inline) -->
+        <div class="film-footer-inline">
+            <p>© <span id="year-film"></span> SPOTTEDBYBRYAN · Built for visual excellence</p>
+        </div>
 
         <div class="portfolio-grid">
             <!-- Projects will be loaded dynamically from projects.json -->
@@ -143,6 +152,15 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Rewind Overlay -->
+    <div id="rewind-overlay">
+        <div class="rewind-noise"></div>
+        <div class="rewind-line" style="animation-delay: 0.1s"></div>
+        <div class="rewind-line" style="animation-delay: 0.5s"></div>
+        <div class="rewind-line" style="animation-delay: 1.2s"></div>
+        <div class="rewind-text">LOADING...</div>
     </div>
 
     <script src="script.js"></script>

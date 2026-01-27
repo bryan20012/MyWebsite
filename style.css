@@ -1,3 +1,12 @@
+/* Miller Banner Black Font */
+@font-face {
+    font-family: 'Miller Banner';
+    src: url('assets/fonts/Miller_Banner_Black.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --bg-color: #000000;
     --text-color: #ffffff;
@@ -5,12 +14,406 @@
     --neutral-grey: #a3a3a3;
     --secondary-grey: #404040;
     --font-main: 'Inter', sans-serif;
+    --font-film: 'Miller Banner', serif;
     --transition-slow: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
     --transition-medium: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --film-sepia: #f4f1ea;
+    --film-black: #000000;
+}
+
+
+/* Film Mode Theme Override */
+body.film-mode {
+    --bg-color: var(--film-sepia);
+    --text-color: #000000;
+    --accent-color: #000000;
+    --font-main: var(--font-film);
+    font-family: var(--font-film);
+    background-color: var(--film-sepia);
+    color: #000000;
+}
+
+body.film-mode #about-modal .modal-content {
+    background: #f7f3e9;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    /* Brutalist/Retro feel */
+}
+
+body.film-mode .modal-title {
+    font-family: var(--font-film);
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    font-size: 3rem;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+body.film-mode .modal-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    opacity: 0.6;
+}
+
+body.film-mode .modal-description {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 400;
+}
+
+body.film-mode .profile-frame {
+    border-radius: 0;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: rotate(-1.5deg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.film-mode .modal-socials a {
+    font-family: var(--font-film);
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    text-transform: none;
+}
+
+body.film-mode .portfolio-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto;
+    /* scroll-snap-type: x proximity; Temporarily disabled for smoother feel */
+    padding: 0 2vw;
+    height: calc(100vh - 180px);
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--film-sepia);
+}
+
+/* Hide scrollbar for film mode grid */
+body.film-mode .portfolio-grid::-webkit-scrollbar {
+    display: none;
+}
+
+body.film-mode .portfolio-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body.film-mode .portfolio-item {
+    flex: 0 0 auto;
+    width: 70vw;
+    max-width: 80vh;
+    height: 80vh;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    scroll-snap-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+body.film-mode .portfolio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (min-width: 768px) {
+    body.film-mode .portfolio-item {
+        width: 60vw;
+        max-width: 70vh;
+        height: 75vh;
+    }
+}
+
+@media (max-width: 768px) {
+    body.film-mode .portfolio-item {
+        width: 85vw;
+        height: 70vh;
+    }
+}
+
+body.film-mode .item-details {
+    color: #000000;
+    bottom: 1.5rem;
+    left: 1.5rem;
+}
+
+/* Disable scale/zoom effect for film mode on hover */
+body.film-mode .portfolio-item:hover .primary-img,
+body.film-mode .portfolio-item:hover .secondary-img {
+    transform: none;
+}
+
+/* Ensure secondary image fades in smoothly without scaling */
+body.film-mode .portfolio-item .secondary-img {
+    transform: none;
+    /* Reset base transform if any */
+    transition: opacity var(--transition-medium);
+    /* Use medium transition for snappy feel */
+}
+
+body.film-mode .item-details {
+    /* Center text to avoid overflow and look cleaner */
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    padding: 0 1rem;
+    pointer-events: none;
+    /* Let clicks pass through text */
+}
+
+body.film-mode .item-details h3 {
+    font-family: var(--font-film);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+    /* Ensure text wraps if needed */
+    white-space: normal;
+}
+
+body.film-mode .item-details p {
+    color: #444;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+}
+
+body.film-mode .gallery-nav a,
+body.film-mode footer,
+body.film-mode footer p {
+    color: #000000;
+}
+
+body.film-mode .item-overlay {
+    background: transparent;
+    backdrop-filter: none;
+}
+
+/* Film Mode About Modal - Retro Minimal */
+body.film-mode #about-modal {
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Dark overlay */
+    backdrop-filter: blur(8px);
+    /* Frosted glass effect */
+}
+
+body.film-mode .modal-content {
+    background: var(--film-sepia);
+    /* Solid vintage paper background */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 0 4px var(--film-sepia), inset 0 0 0 5px rgba(0, 0, 0, 0.8);
+    border-radius: 0;
+    padding: 3rem;
+    max-width: 600px;
+    width: 90%;
+    color: #1a1a1a;
+    /* Film negative scale animation */
+    transform: scale(0.98);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+}
+
+body.film-mode #about-modal.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+body.film-mode .profile-frame {
+    border-color: #000;
+    border-radius: 0;
+    padding: 4px;
+    background: #000;
+}
+
+body.film-mode .profile-img {
+    filter: none;
+    /* Restore original color */
+    border-radius: 0;
+}
+
+body.film-mode .modal-title {
+    color: #000000;
+    font-family: var(--font-film);
+    font-weight: 400;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: 3.5rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+body.film-mode .modal-subtitle {
+    font-family: 'Courier New', monospace;
+    color: #000;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 2rem;
+}
+
+body.film-mode .modal-divider {
+    background: #000;
+    height: 1px;
+    width: 60px;
+    margin: 1.5rem auto;
+}
+
+body.film-mode .modal-description {
+    color: #333;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    letter-spacing: -0.02em;
+}
+
+/* Retro Social Links */
+body.film-mode .modal-socials {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+body.film-mode .modal-socials a {
+    color: #000000 !important;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+body.film-mode .modal-socials a:hover {
+    opacity: 0.6;
+}
+
+/* Close Button - Minimal 'X' */
+body.film-mode .modal-close {
+    color: #000000;
+    top: 2rem;
+    right: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 2rem;
+    font-weight: 300;
+    background: transparent;
+    border: none;
+}
+
+body.film-mode footer {
+    background-color: var(--film-sepia);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+body.film-mode .gallery-nav {
+    background-color: var(--film-sepia);
+}
+
+/* Film mode portfolio layout - Single screen experience */
+body.film-mode #portfolio {
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide footer in film mode - will add inline text instead */
+body.film-mode footer {
+    display: none;
+}
+
+body.film-mode #about {
+    display: none;
+}
+
+/* Film Mode Inline Footer */
+.film-footer-inline {
+    display: none;
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 60;
+    pointer-events: none;
+}
+
+.film-footer-inline p {
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+body.film-mode .film-footer-inline {
+    display: block;
+}
+
+
+
+
+
+
+
+body.film-mode::after {
+    opacity: 0.12;
+    /* More visible grain in film mode */
+}
+
+body.film-mode .hero-bg {
+    filter: sepia(0.5) contrast(0.9) brightness(0.9);
+}
+
+body.film-mode .overlay {
+    background: rgba(244, 236, 216, 0.2);
+    /* Sepia tint on hero overlay */
+}
+
+body.film-mode .logo-circle {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #000000;
+}
+
+body.film-mode .social-icon {
+    color: #000000;
+}
+
+body.film-mode .link-minimal {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+body.film-mode .link-minimal:hover {
+    color: #000;
+}
+
+body.film-mode .modal-close {
+    color: #2a2a2a;
+}
+
+body.film-mode .modal-divider {
+    background: rgba(0, 0, 0, 0.1);
 }
 
 * {
     margin: 0;
+
     padding: 0;
     box-sizing: border-box;
 }
@@ -502,6 +905,113 @@ body::before {
 body.transition-mode::before {
     opacity: 1;
 }
+
+/* Rewind Overlay */
+#rewind-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#rewind-overlay.active {
+    display: block;
+    animation: rewind-flicker 0.8s steps(1) forwards;
+    pointer-events: auto;
+}
+
+.rewind-line {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    left: -10px;
+    animation: rewind-line-move 0.2s linear infinite;
+}
+
+.rewind-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+}
+
+@keyframes rewind-flicker {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    20% {
+        opacity: 0.4;
+    }
+
+    30% {
+        opacity: 0.9;
+    }
+
+    40% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 0.3;
+    }
+
+    70% {
+        opacity: 0.9;
+    }
+
+    80% {
+        opacity: 0.5;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes rewind-line-move {
+    0% {
+        transform: translateX(0);
+        left: 0;
+    }
+
+    100% {
+        transform: translateX(100vw);
+        left: 100vw;
+    }
+}
+
+#rewind-overlay .rewind-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: monospace;
+    font-size: 2rem;
+    letter-spacing: 1rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+}
+
 
 /* Background Images */
 .bg-cover {

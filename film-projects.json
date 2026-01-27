@@ -1,0 +1,34 @@
+[
+    {
+        "title": "Ferrari F12",
+        "date": "January 2026",
+        "primaryImg": "assets/f12f.jpg",
+        "primaryAlt": "Ferrari F12 Front",
+        "secondaryImg": "assets/f12r.jpg",
+        "secondaryAlt": "Ferrari F12 Rear"
+    },
+    {
+        "title": "Air Cooled 911s",
+        "date": "January 2026",
+        "primaryImg": "assets/911f.jpg",
+        "primaryAlt": "Carrera RS",
+        "secondaryImg": "assets/911r.jpg",
+        "secondaryAlt": "2 911s"
+    },
+    {
+        "title": "PORSCHE 996 GT3RS",
+        "date": "December 2025",
+        "primaryImg": "assets/996f.jpg",
+        "primaryAlt": "gt3rs front",
+        "secondaryImg": "assets/996r.jpg",
+        "secondaryAlt": "gt3rs rear"
+    },
+    {
+        "title": "Veyron | Utopia",
+        "date": "October 2025",
+        "primaryImg": "assets/pinkf.jpg",
+        "primaryAlt": "pink front",
+        "secondaryImg": "assets/pinkr.jpg",
+        "secondaryAlt": "pink rear"
+    }
+]
