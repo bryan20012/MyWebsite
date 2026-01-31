@@ -14,13 +14,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 0.1 Disable Double Click
+    document.addEventListener('dblclick', e => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, { capture: true });
+
     // 1. Core State & Elements
     const cursor = document.getElementById('custom-cursor');
     const cursorDot = cursor?.querySelector('div');
     const portfolioGrid = document.querySelector('.portfolio-grid');
+    const eventsContainer = document.querySelector('.events-container');
     const rewindOverlay = document.getElementById('rewind-overlay');
     const filmToggle = document.getElementById('film-toggle');
     const modernToggle = document.getElementById('modern-toggle');
+    const eventsToggle = document.getElementById('events-toggle');
 
     let currentMode = 'modern';
 
@@ -73,6 +81,210 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 2.1 Load Events with New Layout & Color Transitions
+    const loadEvents = async () => {
+        try {
+            const response = await fetch('events.json');
+            const events = await response.json();
+
+            if (!eventsContainer) return;
+
+            eventsContainer.innerHTML = events.map((event, index) => `
+                <div class="event-section" data-color="${event.color}" data-text="${event.textColor}" data-id="${event.id}">
+                    <div class="event-content">
+                        <div class="event-image-wrapper">
+                             <img src="${event.image}" alt="${event.title}" class="event-image" loading="lazy">
+                             ${event.previewImages ? event.previewImages.map((img, i) =>
+                `<img src="${img}" class="event-preview" data-index="${i}">`
+            ).join('') : ''}
+                        </div>
+                        <div class="event-details">
+                            <span class="event-counter">0${index + 1} / 0${events.length}</span>
+                            <h2 class="event-title">${event.title}</h2>
+                            <p class="event-desc">${event.description}</p>
+                            <button class="event-btn" onclick="openEventGallery(${event.id})">View Gallery</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Append Footer Section
+            const currentYear = new Date().getFullYear();
+            const footerHTML = `
+                <div class="event-section footer-section" data-color="#000000" data-text="text-white">
+                    <footer class="w-full h-full flex flex-col justify-end p-8 pb-12">
+                        <div class="flex justify-between items-center text-[9px] tracking-[0.2em] text-neutral-600 uppercase w-full">
+                            <p>&copy; <span id="year-events">${currentYear}</span> SPOTTEDBYBRYAN</p>
+                            <p>Built for visual excellence</p>
+                        </div>
+                    </footer>
+                </div>
+            `;
+            eventsContainer.innerHTML += footerHTML;
+
+            // Setup Background Color Observer
+            setupEventObserver();
+
+            // Setup Hover Slideshow
+            setupEventHover();
+
+        } catch (error) {
+            console.error('Error loading events:', error);
+        }
+    };
+
+    // 2.2 Event Scroll Observer for Background Colors
+    const setupEventObserver = () => {
+        const eventSections = document.querySelectorAll('.event-section');
+        const nav = document.querySelector('.gallery-nav');
+
+        const eventObserverOptions = {
+            threshold: 0.5 // Slightly lower default
+        };
+
+        const eventObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Logic: Only update color if the section is entering the center of the screen
+                if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                    entry.target.classList.add('active');
+
+                    const color = entry.target.getAttribute('data-color');
+                    const textColorClass = entry.target.getAttribute('data-text');
+
+                    if (color) {
+                        document.body.style.backgroundColor = color;
+
+                        if (textColorClass === 'text-black') {
+                            document.body.classList.remove('text-white');
+                            document.body.classList.add('text-black');
+                            if (nav) nav.style.color = 'black';
+                        } else {
+                            document.body.classList.remove('text-black');
+                            document.body.classList.add('text-white');
+                            if (nav) nav.style.color = 'white';
+                        }
+                    }
+                }
+            });
+        }, {
+            threshold: [0.1, 0.4, 0.7],
+            rootMargin: '-20% 0px -20% 0px'
+        });
+
+
+        eventSections.forEach(section => {
+            eventObserver.observe(section);
+        });
+    };
+
+    // 2.3 Event Hover Slideshow Logic
+    const setupEventHover = () => {
+        const sections = document.querySelectorAll('.event-section');
+
+        sections.forEach(section => {
+            const wrapper = section.querySelector('.event-image-wrapper');
+            const previews = section.querySelectorAll('.event-preview');
+
+            if (!wrapper || previews.length === 0) return;
+
+            let interval;
+
+            wrapper.addEventListener('mouseenter', () => {
+                // Start cycle
+                let cycleIndex = 0;
+                // Show first preview immediately
+                previews.forEach(p => p.classList.remove('active-preview'));
+                previews[0].classList.add('active-preview');
+
+                interval = setInterval(() => {
+                    cycleIndex = (cycleIndex + 1) % previews.length;
+
+                    previews.forEach(p => p.classList.remove('active-preview'));
+                    previews[cycleIndex].classList.add('active-preview');
+
+                }, 1200); // Switch every 1.2s
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                previews.forEach(p => p.classList.remove('active-preview'));
+            });
+        });
+    };
+
+    // 2.4 Open Event Gallery
+    window.openEventGallery = async (eventId) => {
+        try {
+            const response = await fetch('events.json');
+            const events = await response.json();
+            const event = events.find(e => e.id === eventId);
+
+            if (!event || !event.gallery) return;
+
+            // Create or Get Detail View Container
+            let detailView = document.getElementById('event-detail-view');
+            if (!detailView) {
+                detailView = document.createElement('div');
+                detailView.id = 'event-detail-view';
+                detailView.className = 'event-detail-view';
+                document.body.appendChild(detailView);
+            }
+
+            // Populate
+            detailView.innerHTML = `
+                <div class="detail-close-btn" onclick="closeEventGallery()">Close Gallery</div>
+                <div class="max-w-7xl mx-auto">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mb-2 uppercase tracking-tighter">${event.title}</h2> 
+                    <p class="text-neutral-400 text-sm tracking-widest uppercase mb-12">${event.location} // ${event.date}</p>
+                    
+                    <div class="event-gallery-grid">
+                        ${event.gallery.map(img => `
+                            <div class="event-gallery-item reveal">
+                                <img src="${img}" loading="lazy" alt="Gallery Image">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Show
+            requestAnimationFrame(() => {
+                detailView.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Lock scroll
+            });
+
+            // Trigger reveals in the new view
+            setTimeout(() => {
+                const newReveals = detailView.querySelectorAll('.reveal');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) entry.target.classList.add('active');
+                    });
+                }, { threshold: 0.1 });
+                newReveals.forEach(el => observer.observe(el));
+            }, 100);
+
+        } catch (error) {
+            console.error('Error opening gallery:', error);
+        }
+    };
+
+    window.closeEventGallery = () => {
+        const detailView = document.getElementById('event-detail-view');
+        if (detailView) {
+            detailView.classList.remove('active');
+            // If in events mode, we usually keep body overflow hidden, 
+            // but if we came from another mode we might need to restore it.
+            // Our current system locks body scroll in events mode anyway.
+
+            setTimeout(() => {
+                detailView.innerHTML = '';
+            }, 500);
+        }
+    };
+
+
+
 
     // 3. Setup Cursor Interactions
     const setupCursorInteractions = () => {
@@ -80,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Global Delegation for cursor effects
         document.addEventListener('mouseover', (e) => {
-            const target = e.target.closest('a, .portfolio-item, button');
+            const target = e.target.closest('a, .portfolio-item, button, .event-item');
             if (target && cursorDot) {
                 cursorDot.style.transform = 'translate(-50%, -50%) scale(4)';
                 cursorDot.style.opacity = '0.3';
@@ -88,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.addEventListener('mouseout', (e) => {
-            const target = e.target.closest('a, .portfolio-item, button');
+            const target = e.target.closest('a, .portfolio-item, button, .event-item');
             if (target && cursorDot) {
                 cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
                 cursorDot.style.opacity = '1';
@@ -107,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Reveal Animations
     const setupRevealAnimations = () => {
-        document.querySelectorAll('.portfolio-item, #about').forEach(el => {
+        document.querySelectorAll('.portfolio-item, #about, .event-item').forEach(el => {
             el.classList.add('reveal');
             observer.observe(el);
         });
@@ -148,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (percentage < 100) {
                     enterBtn.setAttribute('data-progress', `PREPARING ${percentage}%`);
                 } else {
-                    enterBtn.setAttribute('data-progress', 'READY');
+                    enterBtn.setAttribute('data-progress', '');
                 }
             }
         };
@@ -162,6 +374,8 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
+            // If clicking #portfolio or events-toggle, we handle it separately, but smooth scroll is good.
+            // Exception: modern-toggle is often #portfolio
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
@@ -193,8 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     galleryNav.style.opacity = Math.min(1, Math.max(0, navOpacity));
                     galleryNav.style.pointerEvents = navOpacity <= 0 ? 'none' : 'auto';
 
-                    // If in film mode, we might want to keep the nav visible or handle its opacity differently
-                    if (document.body.classList.contains('film-mode')) {
+                    // If in film mode or events mode, we might want to keep the nav visible or handle its opacity differently
+                    if (document.body.classList.contains('film-mode') || currentMode === 'events') {
                         galleryNav.style.opacity = '1';
                         galleryNav.style.pointerEvents = 'auto';
                     }
@@ -269,45 +483,123 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 10. Film Mode Toggle Logic
-    const toggleFilmMode = (mode) => {
+    // 10. Mode Toggle Logic (Modern, Film, Events)
+    const switchContent = (mode) => {
+        // Reset Layout & Classes
+        if (mode === 'film') {
+            document.body.classList.add('film-mode');
+            filmToggle.classList.add('hidden');
+            modernToggle.classList.remove('hidden');
+            eventsToggle.classList.remove('hidden');
+            loadProjects('film-projects.json');
+
+            if (portfolioGrid) {
+                portfolioGrid.style.display = 'flex';
+                // Ensure opacity transition happens a frame later
+                requestAnimationFrame(() => {
+                    portfolioGrid.style.opacity = '1';
+                });
+            }
+            if (eventsContainer) eventsContainer.classList.add('hidden');
+
+        } else if (mode === 'modern') {
+            document.body.classList.remove('film-mode');
+            filmToggle.classList.remove('hidden');
+            modernToggle.classList.add('hidden');
+            eventsToggle.classList.remove('hidden');
+            loadProjects('projects.json');
+
+            if (portfolioGrid) {
+                portfolioGrid.style.display = 'grid';
+                requestAnimationFrame(() => {
+                    portfolioGrid.style.opacity = '1';
+                });
+            }
+            if (eventsContainer) eventsContainer.classList.add('hidden');
+
+        } else if (mode === 'events') {
+            document.body.classList.remove('film-mode');
+            filmToggle.classList.remove('hidden');
+            modernToggle.classList.remove('hidden');
+            eventsToggle.classList.add('hidden');
+
+            if (portfolioGrid) {
+                portfolioGrid.style.display = 'none';
+                portfolioGrid.style.opacity = '0';
+            }
+            if (eventsContainer) {
+                eventsContainer.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    eventsContainer.style.opacity = '1';
+                });
+            }
+
+            // Reset Body Styles before entering events mode
+            document.body.style.backgroundColor = '';
+            document.body.classList.remove('text-black', 'text-white');
+
+            // Lock Body Scroll for pure Event container usage
+            document.body.style.overflow = 'hidden';
+            loadEvents();
+            currentMode = mode;
+            return; // Exit early, events handles its own setup
+        }
+
+        // Reset Body Scroll/Styles if NOT events
+        document.body.style.overflow = '';
+        document.body.style.backgroundColor = '';
+        document.body.classList.remove('text-black', 'text-white');
+        const nav = document.querySelector('.gallery-nav');
+        if (nav) nav.style.color = '';
+
+        currentMode = mode;
+
+        // Reset scroll position for the grid
+        if (portfolioGrid) portfolioGrid.scrollLeft = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+
+    const toggleMode = (mode) => {
         if (mode === currentMode) return;
 
-        // Trigger Rewind Animation
-        if (rewindOverlay) {
-            rewindOverlay.classList.add('active');
+        // Determine Transition Type
+        // RULE: If either Source OR Target is 'film', use REWIND. Otherwise use FADE.
+        const useRewind = (mode === 'film' || currentMode === 'film');
 
-            // Halfway through animation, switch theme and content
+        if (useRewind) {
+            // REWIND TRANSITION
+            if (rewindOverlay) {
+                rewindOverlay.classList.add('active');
+
+                // Halfway through animation, switch content
+                setTimeout(() => {
+                    switchContent(mode);
+                }, 400);
+
+                // Clean up animation
+                setTimeout(() => {
+                    rewindOverlay.classList.remove('active');
+                }, 800);
+            }
+        } else {
+            // FADE TRANSITION (Modern <-> Events)
+            // Fade out current content first
+            if (currentMode === 'events' && eventsContainer) {
+                eventsContainer.style.opacity = '0';
+            } else if (portfolioGrid) {
+                portfolioGrid.style.opacity = '0';
+            }
+
             setTimeout(() => {
-                if (mode === 'film') {
-                    document.body.classList.add('film-mode');
-                    filmToggle.classList.add('hidden');
-                    modernToggle.classList.remove('hidden');
-                    loadProjects('film-projects.json');
-                } else {
-                    document.body.classList.remove('film-mode');
-                    filmToggle.classList.remove('hidden');
-                    modernToggle.classList.add('hidden');
-                    loadProjects('projects.json');
-                }
-                currentMode = mode;
-
-                // Reset scroll position for the grid
-                if (portfolioGrid) portfolioGrid.scrollLeft = 0;
-
-                // Scroll to top for fresh experience
-                window.scrollTo({ top: 0, behavior: 'instant' });
-            }, 400);
-
-            // Clean up animation
-            setTimeout(() => {
-                rewindOverlay.classList.remove('active');
-            }, 800);
+                switchContent(mode);
+            }, 500);
         }
     };
 
-    if (filmToggle) filmToggle.addEventListener('click', () => toggleFilmMode('film'));
-    if (modernToggle) modernToggle.addEventListener('click', () => toggleFilmMode('modern'));
+
+    if (filmToggle) filmToggle.addEventListener('click', () => toggleMode('film'));
+    if (modernToggle) modernToggle.addEventListener('click', () => toggleMode('modern'));
+    if (eventsToggle) eventsToggle.addEventListener('click', () => toggleMode('events'));
 
     // 11. Film Mode Navigation - Click on Grid Background
     if (portfolioGrid) {

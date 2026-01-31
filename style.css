@@ -91,12 +91,16 @@ body.film-mode .portfolio-grid {
     scroll-behavior: auto;
     /* scroll-snap-type: x proximity; Temporarily disabled for smoother feel */
     padding: 0 2vw;
-    height: calc(100vh - 180px);
+    margin-top: 4rem;
+    /* Increased gap from header */
+    height: calc(100vh - 180px - 4rem);
+    /* Adjusted height calculation */
     width: 100%;
     align-items: center;
     gap: 0.5rem;
     background-color: var(--film-sepia);
 }
+
 
 /* Hide scrollbar for film mode grid */
 body.film-mode .portfolio-grid::-webkit-scrollbar {
@@ -228,6 +232,25 @@ body.film-mode .modal-content {
     opacity: 0;
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
 }
+
+@media (max-width: 768px) {
+    body.film-mode .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    body.film-mode .modal-title {
+        font-size: 2.2rem;
+    }
+
+    body.film-mode .modal-subtitle {
+        margin-bottom: 1rem;
+    }
+}
+
+
 
 body.film-mode #about-modal.active .modal-content {
     transform: scale(1);
@@ -454,12 +477,25 @@ body.gallery-active #custom-cursor {
     }
 }
 
+/* Global Scrollbar Hide */
+* {
+    scrollbar-width: none !important;
+    /* Firefox */
+    -ms-overflow-style: none !important;
+    /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+    display: none !important;
+    /* Chrome/Safari/Edge */
+}
+
 html {
     scroll-behavior: smooth;
     background-color: var(--bg-color);
-    scrollbar-gutter: stable;
-    /* Keeps site from jumping when scrollbar appears */
 }
+
+
 
 body {
     font-family: var(--font-main);
@@ -1155,12 +1191,16 @@ body.gallery-active .landing-stack {
 
 /* Integrated Gallery Nav */
 .gallery-nav {
-    position: sticky;
+    position: fixed;
+    /* Changed from sticky to fixed for consistent overlay */
     top: 0;
-    z-index: 30;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    /* Higher than events container */
     background: transparent;
     will-change: opacity;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, color 0.5s ease;
 }
 
 /* Hide gallery initially with an 'Arrival' animation */
@@ -1448,4 +1488,338 @@ a {
     .md-block {
         display: block;
     }
+}
+
+/* Event & Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-grid {
+    transition: opacity 0.5s ease;
+}
+
+/* New Events Layout Styles */
+.events-container {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    width: 100%;
+}
+
+.event-section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+    position: relative;
+    padding: 6rem 2rem;
+}
+
+.event-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .event-content {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 8rem;
+    }
+
+    /* Alternating layout for variety */
+    .event-section:nth-child(even) .event-content {
+        grid-template-columns: 1fr 1.2fr;
+        direction: rtl;
+        /* Quick way to swap columns visually */
+    }
+
+    .event-section:nth-child(even) .event-content>* {
+        direction: ltr;
+        /* Reset text direction */
+    }
+}
+
+/* Event Image Container */
+.event-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    border-radius: 20px;
+    /* Increased curve */
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 1, 0.2, 1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.event-section.active .event-image-wrapper {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s ease;
+    border-radius: 20px;
+}
+
+/* Event Preview Images (Hover) */
+.event-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 20px;
+}
+
+.event-preview.active-preview {
+    opacity: 1;
+}
+
+.event-section:hover .event-image {
+    transform: scale(1.05);
+    /* Subtle zoom on base image */
+}
+
+/* Event Text Details */
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: left;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+}
+
+.event-section.active .event-details {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.event-counter {
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 1rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.event-counter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 40px;
+    background: currentColor;
+}
+
+.event-title {
+    font-family: var(--font-main);
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.event-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+    max-width: 400px;
+}
+
+.event-btn {
+    /* Matching Glass Btn Styles */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 3rem;
+    border-radius: 4rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    margin-top: 1rem;
+    text-transform: uppercase;
+}
+
+.event-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transform: scale(1.02);
+}
+
+
+/* Event Detail View (Gallery) */
+.event-detail-view {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: black;
+    overflow-y: auto;
+    padding: 120px 5vw 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.event-detail-view.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.event-gallery-grid {
+    column-count: 1;
+    column-gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+    .event-gallery-grid {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .event-gallery-grid {
+        column-count: 3;
+    }
+}
+
+.detail-close-btn {
+    position: fixed;
+    top: 3rem;
+    right: 5vw;
+    z-index: 110;
+    color: white;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem 2rem;
+    border-radius: 4rem;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.4s ease;
+}
+
+.detail-close-btn:hover {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+}
+
+.event-gallery-item {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #111;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    /* Helps with some column-count rendering issues */
+}
+
+.event-gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 1s ease;
+}
+
+.event-gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.event-gallery-item.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.event-gallery-item.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+/* Background Color Transition Layer on Body */
+body {
+    transition: background-color 1s ease, color 0.5s ease;
+}
+
+/* Specific nav transitions */
+nav a {
+    transition: color 0.5s ease, opacity 0.3s ease;
+}
+
+/* Ensure smooth scrolling for the events container - FIXED POSITION */
+#events {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    /* Below Nav (50) but above Hero (0) */
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: contain;
+    /* Prevents getting stuck in parent scroll */
+    padding: 0;
+}
+
+/* Hide scrollbar for cleaner look */
+#events::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.event-section.footer-section {
+    min-height: auto !important;
+    /* Auto height to fit content only */
+    height: auto;
+    padding: 0;
+    scroll-snap-align: end;
+    /* Snap to the bottom of the viewport */
+    background: transparent;
+    /* Let body color show through or handle via observer */
 }

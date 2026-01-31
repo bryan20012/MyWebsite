@@ -85,9 +85,11 @@
                 class="text-[10px] tracking-[0.4em] font-medium uppercase hover:opacity-50 transition-opacity">SPOTTEDBYBRYAN</a>
             <div class="flex gap-8 gap-md-16 items-center">
                 <a href="#portfolio" id="modern-toggle"
-                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity hidden">Modern</a>
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity hidden">Digital</a>
                 <a href="javascript:void(0)" id="film-toggle"
                     class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Film</a>
+                <a href="javascript:void(0)" id="events-toggle"
+                    class="text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">Events</a>
                 <a href="javascript:void(0)"
                     class="about-trigger text-[9px] tracking-[0.3em] font-medium uppercase hover:opacity-50 transition-opacity">About</a>
             </div>
@@ -101,7 +103,14 @@
         <div class="portfolio-grid">
             <!-- Projects will be loaded dynamically from projects.json -->
         </div>
+
+        <!-- Events Container (Hidden by default) -->
+        <div class="events-container hidden" id="events">
+            <!-- Events loaded via JS -->
+        </div>
     </section>
+
+    <!-- About Section -->
 
     <!-- About Section -->
     <section id="about"
@@ -160,7 +169,7 @@
         <div class="rewind-line" style="animation-delay: 0.1s"></div>
         <div class="rewind-line" style="animation-delay: 0.5s"></div>
         <div class="rewind-line" style="animation-delay: 1.2s"></div>
-        <div class="rewind-text">LOADING...</div>
+        <!-- <div class="rewind-text">LOADING...</div> -->
     </div>
 
     <script src="script.js"></script>

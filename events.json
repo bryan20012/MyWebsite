@@ -1,0 +1,49 @@
+[
+    {
+        "id": 1,
+        "date": "2025.08.31",
+        "title": "Merdeka Cars and Coffee",
+        "location": "Damansara, Malaysia",
+        "description": "Celebrating Malaysia's Independence Day with a gathering of automotive enthusiasts.",
+        "image": "assets/events/31082025/1.JPG",
+        "color": "#393646",
+        "textColor": "text-white",
+        "previewImages": [
+            "assets/events/31082025/2.JPG",
+            "assets/events/31082025/3.JPG",
+            "assets/events/31082025/4.JPG"
+        ],
+        "gallery": [
+            "assets/events/31082025/1.JPG",
+            "assets/events/31082025/2.JPG",
+            "assets/events/31082025/3.JPG",
+            "assets/events/31082025/4.JPG",
+            "assets/events/31082025/5.JPG",
+            "assets/events/31082025/6.JPG"
+        ]
+    },
+    {
+        "id": 2,
+        "date": "2025.10.11",
+        "title": "Vamos Car Meet",
+        "location": "Johor Bahru, Malaysia",
+        "description": "A gathering of automotive enthusiasts in Johor Bahru.",
+        "image": "assets/events/11102025/1.JPG",
+        "color": "#4F4557",
+        "textColor": "text-white",
+        "previewImages": [
+            "assets/events/11102025/2.JPG",
+            "assets/events/11102025/3.JPG",
+            "assets/events/11102025/4.JPG"
+        ],
+        "gallery": [
+            "assets/events/11102025/1.JPG",
+            "assets/events/11102025/2.JPG",
+            "assets/events/11102025/3.JPG",
+            "assets/events/11102025/4.JPG",
+            "assets/events/11102025/5.JPG",
+            "assets/events/11102025/6.JPG",
+            "assets/events/11102025/7.JPG"
+        ]
+    }
+]
