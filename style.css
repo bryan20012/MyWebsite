@@ -1201,7 +1201,15 @@ body.gallery-active .landing-stack {
     background: transparent;
     will-change: opacity;
     transition: opacity 0.4s ease, color 0.5s ease;
+    pointer-events: none;
+    /* Allow scroll to pass through the nav area */
 }
+
+.gallery-nav * {
+    pointer-events: auto;
+    /* Re-enable for links and buttons */
+}
+
 
 /* Hide gallery initially with an 'Arrival' animation */
 #portfolio,
@@ -1528,12 +1536,31 @@ a {
 .event-content {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 4rem;
+    gap: 3rem;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     align-items: center;
 }
+
+@media (max-width: 768px) {
+    .event-section {
+        padding: 5rem 1.5rem;
+        min-height: auto;
+        /* Allow content to dictate height on mobile */
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .event-content {
+        gap: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+}
+
 
 @media (min-width: 768px) {
     .event-content {
@@ -1561,12 +1588,20 @@ a {
     aspect-ratio: 4/5;
     overflow: hidden;
     border-radius: 20px;
-    /* Increased curve */
     opacity: 0;
     transform: scale(0.95);
     transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 1, 0.2, 1);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
+
+@media (max-width: 768px) {
+    .event-image-wrapper {
+        aspect-ratio: 1/1;
+        /* Square on mobile to save space */
+        max-height: 40vh;
+    }
+}
+
 
 .event-section.active .event-image-wrapper {
     opacity: 1;
@@ -1649,6 +1684,24 @@ a {
     letter-spacing: -0.02em;
 }
 
+@media (max-width: 768px) {
+    .event-title {
+        font-size: 2rem;
+    }
+
+    .event-details {
+        gap: 1rem;
+        align-items: center;
+        text-align: center;
+    }
+
+    .event-counter::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+
 .event-desc {
     font-size: 1rem;
     line-height: 1.6;
@@ -1696,6 +1749,13 @@ a {
     pointer-events: none;
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+@media (max-width: 768px) {
+    .event-detail-view {
+        padding: 80px 1.5rem 40px;
+    }
+}
+
 
 .event-detail-view.active {
     opacity: 1;
@@ -1783,8 +1843,9 @@ a {
 
 /* Background Color Transition Layer on Body */
 body {
-    transition: background-color 1s ease, color 0.5s ease;
+    transition: background-color 0.6s ease, color 0.5s ease;
 }
+
 
 /* Specific nav transitions */
 nav a {
@@ -1800,12 +1861,17 @@ nav a {
     height: 100vh;
     height: 100dvh;
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    /* Momentum scrolling for iOS */
+    touch-action: pan-y;
+    /* Optimize for vertical swiping */
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     overscroll-behavior-y: contain;
     /* Prevents getting stuck in parent scroll */
     padding: 0;
 }
+
 
 /* Hide scrollbar for cleaner look */
 #events::-webkit-scrollbar {
@@ -1822,4 +1888,9 @@ nav a {
     /* Snap to the bottom of the viewport */
     background: transparent;
     /* Let body color show through or handle via observer */
+}
+
+.event-section footer {
+    opacity: 1 !important;
+    transform: none !important;
 }

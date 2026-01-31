@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 startPreloader();
                 portfolioGrid.style.opacity = '1';
                 portfolioGrid.style.transition = 'opacity 0.5s ease';
-            }, 300);
+            }, 100);
         } catch (error) {
             console.error('Error loading projects:', error);
         }
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const footerHTML = `
                 <div class="event-section footer-section" data-color="#000000" data-text="text-white">
                     <footer class="w-full h-full flex flex-col justify-end p-8 pb-12">
-                        <div class="flex justify-between items-center text-[9px] tracking-[0.2em] text-neutral-600 uppercase w-full">
+                        <div class="flex justify-between items-center text-[9px] tracking-[0.2em] text-neutral-400 uppercase w-full">
                             <p>&copy; <span id="year-events">${currentYear}</span> SPOTTEDBYBRYAN</p>
                             <p>Built for visual excellence</p>
                         </div>
@@ -164,11 +164,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (nav) nav.style.color = 'white';
                         }
                     }
+
+                    // Mobile Autoplay Slideshow
+                    if (window.innerWidth <= 768 && entry.target._startSlideshow) {
+                        entry.target._startSlideshow();
+                    }
+                } else {
+                    // Stop slideshow when moving away
+                    if (window.innerWidth <= 768 && entry.target._stopSlideshow) {
+                        entry.target._stopSlideshow();
+                    }
                 }
             });
         }, {
             threshold: [0.1, 0.4, 0.7],
-            rootMargin: '-20% 0px -20% 0px'
+            rootMargin: '-15% 0px -15% 0px'
         });
 
 
@@ -189,26 +199,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let interval;
 
-            wrapper.addEventListener('mouseenter', () => {
-                // Start cycle
+            const startSlideshow = () => {
+                if (interval) return; // Prevent multiple intervals
                 let cycleIndex = 0;
-                // Show first preview immediately
                 previews.forEach(p => p.classList.remove('active-preview'));
                 previews[0].classList.add('active-preview');
 
                 interval = setInterval(() => {
                     cycleIndex = (cycleIndex + 1) % previews.length;
-
                     previews.forEach(p => p.classList.remove('active-preview'));
                     previews[cycleIndex].classList.add('active-preview');
+                }, 1500); // Slower for mobile/scrolling
+            };
 
-                }, 1200); // Switch every 1.2s
-            });
-
-            wrapper.addEventListener('mouseleave', () => {
+            const stopSlideshow = () => {
                 clearInterval(interval);
+                interval = null;
                 previews.forEach(p => p.classList.remove('active-preview'));
-            });
+            };
+
+            // Attach to element for observer access
+            section._startSlideshow = startSlideshow;
+            section._stopSlideshow = stopSlideshow;
+
+            wrapper.addEventListener('mouseenter', startSlideshow);
+            wrapper.addEventListener('mouseleave', stopSlideshow);
         });
     };
 
@@ -319,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Reveal Animations
     const setupRevealAnimations = () => {
-        document.querySelectorAll('.portfolio-item, #about, .event-item').forEach(el => {
+        document.querySelectorAll('.portfolio-item, #about, .event-item, footer').forEach(el => {
             el.classList.add('reveal');
             observer.observe(el);
         });
@@ -507,6 +522,13 @@ document.addEventListener('DOMContentLoaded', () => {
             filmToggle.classList.remove('hidden');
             modernToggle.classList.add('hidden');
             eventsToggle.classList.remove('hidden');
+
+            // Fading out events before calling loadProjects
+            if (eventsContainer) {
+                eventsContainer.style.opacity = '0';
+                setTimeout(() => eventsContainer.classList.add('hidden'), 400);
+            }
+
             loadProjects('projects.json');
 
             if (portfolioGrid) {
@@ -515,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     portfolioGrid.style.opacity = '1';
                 });
             }
-            if (eventsContainer) eventsContainer.classList.add('hidden');
 
         } else if (mode === 'events') {
             document.body.classList.remove('film-mode');
@@ -583,16 +604,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             // FADE TRANSITION (Modern <-> Events)
-            // Fade out current content first
+            // Snappier 400ms transition for better UX
             if (currentMode === 'events' && eventsContainer) {
                 eventsContainer.style.opacity = '0';
             } else if (portfolioGrid) {
                 portfolioGrid.style.opacity = '0';
             }
 
+            // Reset background immediately to start the fade alongside content
+            document.body.style.backgroundColor = '';
+            document.body.classList.remove('text-black', 'text-white');
+
             setTimeout(() => {
                 switchContent(mode);
-            }, 500);
+            }, 400);
         }
     };
 
